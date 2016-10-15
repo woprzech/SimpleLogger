@@ -7,19 +7,51 @@ import spock.lang.Specification
  */
 class SimpleLoggerSpec extends Specification {
 
-    def "create logger with name"() {
-        given:
-        SimpleLogger logger = SimpleLoggerFactory.getLogger("name")
-        expect:
-        logger.getName() == "name"
+    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+
+    void setup() {
+        System.setOut(new PrintStream(outContent))
     }
 
-    def "two loggers with same name are the same object"() {
+    void cleanup() {
+        System.setOut(null)
+
+    }
+
+    def "log info"() {
         given:
-        SimpleLogger firstLogger = SimpleLoggerFactory.getLogger("name")
+        SimpleLogger logger = SimpleLoggerFactory.getLogger("logger")
         when:
-        SimpleLogger secondLogger = SimpleLoggerFactory.getLogger("name")
+        logger.info("informuje")
         then:
-        secondLogger == firstLogger
+        outContent.toString().contains("logger [INFO]: informuje")
+    }
+
+    def "log debug"() {
+        given:
+        SimpleLogger logger = SimpleLoggerFactory.getLogger("logger")
+        when:
+        logger.debug("debuguje")
+        then:
+        outContent.toString().contains("logger [DEBUG]: debuguje")
+    }
+
+
+    def "log warn"() {
+        given:
+        SimpleLogger logger = SimpleLoggerFactory.getLogger("logger")
+        when:
+        logger.warn("ostrzeżenie")
+        then:
+        outContent.toString().contains("logger [WARN]: ostrzeżenie")
+    }
+
+    def "log error"() {
+        given:
+        SimpleLogger logger = SimpleLoggerFactory.getLogger("logger")
+        when:
+        logger.error("błąd")
+        then:
+        outContent.toString().contains("logger [ERROR]: błąd")
     }
 }

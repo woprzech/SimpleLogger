@@ -1,6 +1,7 @@
 import pl.kody.ekstremalne.SimpleLogger
 import pl.kody.ekstremalne.SimpleLoggerFactory
 import spock.lang.Specification
+import spock.lang.Unroll
 
 /**
  * Created by Wojtek Przechodzen.
@@ -18,40 +19,60 @@ class SimpleLoggerSpec extends Specification {
 
     }
 
-    def "log info"() {
+    @Unroll
+    def "log info"(String msg, Object parameter, String result) {
         given:
         SimpleLogger logger = SimpleLoggerFactory.getLogger("logger")
         when:
-        logger.info("informuje")
+        logger.info(msg, parameter)
         then:
-        outContent.toString().contains("logger [INFO]: informuje")
+        outContent.toString().contains(result)
+        where:
+        msg                       | parameter        | result
+        "info"                    | null             | "logger [INFO]: info"
+        "info with parameter: %s" | "parameterValue" | "logger [INFO]: info with parameter: parameterValue"
     }
 
-    def "log debug"() {
+    @Unroll
+    def "log debug"(String msg, Object parameter, String result) {
         given:
         SimpleLogger logger = SimpleLoggerFactory.getLogger("logger")
         when:
-        logger.debug("debuguje")
+        logger.debug(msg, parameter)
         then:
-        outContent.toString().contains("logger [DEBUG]: debuguje")
+        outContent.toString().contains(result)
+        where:
+        msg                        | parameter        | result
+        "debug"                    | null             | "logger [DEBUG]: debug"
+        "debug with parameter: %s" | "parameterValue" | "logger [DEBUG]: debug with parameter: parameterValue"
     }
 
-
-    def "log warn"() {
+    @Unroll
+    def "log warn"(String msg, Object parameter, String result) {
         given:
         SimpleLogger logger = SimpleLoggerFactory.getLogger("logger")
         when:
-        logger.warn("ostrzeżenie")
+        logger.warn(msg, parameter)
         then:
-        outContent.toString().contains("logger [WARN]: ostrzeżenie")
+        outContent.toString().contains(result)
+        where:
+        msg                          | parameter        | result
+        "warning"                    | null             | "logger [WARN]: warning"
+        "warning with parameter: %s" | "parameterValue" | "logger [WARN]: warning with parameter: parameterValue"
     }
 
-    def "log error"() {
+    @Unroll
+    def "log error"(String msg, Object parameter, String result) {
         given:
         SimpleLogger logger = SimpleLoggerFactory.getLogger("logger")
         when:
-        logger.error("błąd")
+        logger.error(msg, parameter)
         then:
-        outContent.toString().contains("logger [ERROR]: błąd")
+        outContent.toString().contains(result)
+        where:
+        msg                        | parameter        | result
+        "błąd"                     | null             | "logger [ERROR]: błąd"
+        "error with parameter: %s" | "parameterValue" | "logger [ERROR]: error with parameter: parameterValue"
+
     }
 }

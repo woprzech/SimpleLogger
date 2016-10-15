@@ -10,10 +10,10 @@ import java.util.Date;
  */
 public class MessageBuilder {
 
-    public static String build(String loggerName, String msg, Level level) {
+    public static String build(String loggerName, String msg, Level level, Object... objects) {
         Date now = new Date();
         SimpleDateFormat ft =
                 new SimpleDateFormat("E dd.MM.yyyy hh:mm:ss");
-        return ft.format(now) + " " + loggerName + " [" + level + "]: " + msg;
+        return ft.format(now) + " " + loggerName + " [" + level + "]: " + String.format(msg, objects);
     }
 }
